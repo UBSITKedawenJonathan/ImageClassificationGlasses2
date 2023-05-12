@@ -19,7 +19,7 @@ if __name__ == '__main__':
     #Run these 2 following lines to download the searched images' url and downloads the first one via. [0], this is for testing the data later
     download_url(search_images('person in tuxedo', max_images=1)[0], testpath/'Tuxedo2.jpg', show_progress=False)
     download_url(search_images('Person in pajama', max_images=1)[0], testpath/'Pajama2.jpg', show_progress=False)
-    """#Search for images in duckduckgo and download them, this will only download 1 of each since max_images=1)[0] is set
+    """
 
     """
     for o in searches:
@@ -32,24 +32,27 @@ if __name__ == '__main__':
     failed = verify_images(get_image_files(path))
     failed.map(Path.unlink)
     len(failed)
-    """# Execute this block atleast once then you can comment it out to prevent over downloading
+    """# Execute this block atleast once to get data then you can comment it out to prevent over downloading
 
-    """
+
     dls = DataBlock(
         blocks=(ImageBlock, CategoryBlock),#input of imageblock, output of categoryblock
         get_items=get_image_files,#get data from path in dataloaders(path)
         splitter=RandomSplitter(valid_pct=0.2, seed=42),#20% of data will be used for test data
-        get_y=parent_label,
+        get_y=parent_label,# gets the name of the folder and uses it as label for the data
         item_tfms=[Resize(192, method='squish')]
     ).dataloaders(path, bs=32)#Batch size 32
     dls.show_batch(max_n=6)#supposed to show 6 images with labels but its not showing
-    learn = cnn_learner(dls, resnet18, metrics=error_rate)#gets the data from dls, uses resnet18 as the learning model, and an ouput of error_rate
+    learn = cnn_learner(dls, resnet18, metrics=error_rate)
+    #gets the data from dls, uses resnet18 as the learning model, and an ouput of error_rate
     learn.fine_tune(3)#epoch amount
 
-    is_tux, _, probs = learn.predict(PILImage.create('tux2.jpg'))#uses the learn model to predict data of the variables and store in is_tux, _ to ignore useless values?, probs is numerical value of prediction
+    is_tux, _, probs = learn.predict(PILImage.create(testpath/'paj.jpg'))
+    #uses the learn model to predict data of the variables and store in is_tux, _ to ignore useless values?, probs is numerical value of prediction
     print(f"This is a: {is_tux}.")
     if is_tux=="Tuxedo":
         print(f"Probability it's a Tuxedo: {(1-probs[0])*100:.2f}%") #present the probability rate in percentage 2 decimals
     else:
         print(f"Probability it's a Pajama: {probs[0]*100:.2f}%") #present the probability rate in percentage 2 decimals
-    """# Uncomment this and change the data in <is_tux, _, probs = learn.predict(PILImage.create('tux2.jpg'))> to see if the image is a tux or a pajama
+
+    #Uncomment this and change the data in <is_tux, _, probs = learn.predict(PILImage.create('tux2.jpg'))> to see if the image is a tux or a pajama
