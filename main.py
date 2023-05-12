@@ -10,16 +10,16 @@ if __name__ == '__main__':
 
     searches = 'Pajama', 'Tuxedo'
     path = Path('Tux_or_Paj')
-
+    testpath = Path('Test_Pics_here')
     """
     def search_images(term, max_images=50):
         print(f"Searching for '{term}'")
         return L(ddg_images(term, max_results=max_images)).itemgot('image')
 
     #Run these 2 following lines to download the searched images' url and downloads the first one via. [0], this is for testing the data later
-    download_url(search_images('person in tuxedo', max_images=1)[0], 'Tuxedo.jpg', show_progress=False)
-    download_url(search_images('Person in pajama', max_images=1)[0], 'Pajama.jpg', show_progress=False)
-    """#This method will search images using duckduckgo
+    download_url(search_images('person in tuxedo', max_images=1)[0], testpath/'Tuxedo2.jpg', show_progress=False)
+    download_url(search_images('Person in pajama', max_images=1)[0], testpath/'Pajama2.jpg', show_progress=False)
+    """#Search for images in duckduckgo and download them, this will only download 1 of each since max_images=1)[0] is set
 
     """
     for o in searches:
