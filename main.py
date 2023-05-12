@@ -52,4 +52,4 @@ if __name__ == '__main__':
         print(f"Probability it's a Tuxedo: {(1-probs[0])*100:.2f}%") #present the probability rate in percentage 2 decimals
     else:
         print(f"Probability it's a Pajama: {probs[0]*100:.2f}%") #present the probability rate in percentage 2 decimals
-    """
+    """# Uncomment this and change the data in <is_tux, _, probs = learn.predict(PILImage.create('tux2.jpg'))> to see if the image is a tux or a pajama
